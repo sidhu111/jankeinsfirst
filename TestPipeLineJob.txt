@@ -1,0 +1,39 @@
+node {
+   def mvnHome
+   def workspace="${JENKINS_HOME}\\workspace"
+  // def classpath="${JENKINS_HOME}\\workspace\\JavatestpipelineJob\\src;${JENKINS_HOME}\\JARS_SELENIUM\\*"
+   //def productionServer='E:\\apache-tomcat-9.0.21'
+   //def TestServer='E:\\apache-tomcat-9.0.21'
+    def classpath="C:\\Program Files\\Java\\jdk1.8.0_271\\bin";
+   
+   stage('Preparation') { 
+      // Get some code from a GitHub repository
+      
+	  	  git branch: "${BuildBranch}", 
+            credentialsId: 'git', 
+            url: "https://gitlab.com/prasathm90/${BuildProject}.git"
+     
+	  // Get the Maven tool.
+      // ** NOTE: This 'Maven' Maven tool must be configured
+      // **       in the global configuration.           
+      //mvnHome = tool 'maven'
+      
+   }
+	stage('Build') {
+      // Run the maven build
+      echo 'Building Application...'
+      
+	    //bat ("set PATH=%C:\Program Files\Java\jdk1.8.0_271\bin%" )
+	    withEnv(["classpath=${classpath}"]){
+         
+        bat("javac ${BuildProject}.java")}
+        bat("java ${BuildProject}")
+      
+	  
+	  echo 'Building Completed'
+   }
+}	
+ 
+   
+   
+   
